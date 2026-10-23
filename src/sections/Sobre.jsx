@@ -12,7 +12,7 @@ const etapas = [
 
 const fatos = [
   ['Local', 'Atibaia, SP'],
-  ['Formação', 'Análise e Desenvolvimento de Sistemas · USF'],
+  ['Formação', 'Análise e Desenvolvimento de Sistemas · UNIFAAT'],
   ['Atuação', 'Freelancer · sites e sistemas web'],
 ]
 
@@ -28,7 +28,7 @@ export default function Sobre() {
           <div className="space-y-4 text-lg leading-relaxed text-subtle">
             <p>
               Sou desenvolvedor web freelancer em <span className="text-fg">Atibaia, SP</span>, e estudante de Análise e
-              Desenvolvimento de Sistemas na <span className="text-fg">USF</span>.
+              Desenvolvimento de Sistemas na <span className="text-fg">UNIFAAT</span>.
             </p>
             <p>
               Crio sites que apresentam bem o negócio e sistemas que resolvem problemas reais do dia a dia, do controle
