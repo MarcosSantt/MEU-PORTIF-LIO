@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Tokens da marca (assets/marca/README.md) */
+@theme {
+  --color-ink: #0f1115;
+  --color-paper: #fafaf8;
+  --color-accent: #2563eb;
+  --color-muted: #5b6170;
+  --color-accent-on-dark: #60a5fa;
+
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Cores semânticas que trocam no modo escuro (valores tirados das pranchas) */
+:root {
+  --bg: var(--color-paper);
+  --fg: var(--color-ink);
+  --subtle: var(--color-muted);
+  --brand: var(--color-accent);
+  --surface: #ffffff;
+  --line: #e2e3e0;
+}
+[data-theme='dark'] {
+  --bg: var(--color-ink);
+  --fg: var(--color-paper);
+  --subtle: #a3a8b3;
+  --brand: var(--color-accent-on-dark);
+  --surface: #171a20;
+  --line: #2a2c30;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-subtle: var(--subtle);
+  --color-brand: var(--brand);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    color-scheme: light;
+  }
+  [data-theme='dark'] {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+/* Entrada suave: .revelar entra ao rolar; .entrada entra ao carregar (com atraso por --atraso) */
+.revelar {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.revelar.visivel {
+  opacity: 1;
+  transform: none;
+}
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.entrada {
+  animation: subir 0.7s ease both;
+  animation-delay: var(--atraso, 0s);
+}
+.revelar .escalonado > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.revelar.visivel .escalonado > * {
+  opacity: 1;
+  transform: none;
+}
+.revelar.visivel .escalonado > *:nth-child(2) { transition-delay: 0.08s; }
+.revelar.visivel .escalonado > *:nth-child(3) { transition-delay: 0.16s; }
+.revelar.visivel .escalonado > *:nth-child(4) { transition-delay: 0.24s; }
+.revelar.visivel .escalonado > *:nth-child(5) { transition-delay: 0.32s; }
+
+dialog::backdrop {
+  background: rgb(15 17 21 / 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .entrada {
+    animation: none;
+  }
+  .revelar,
+  .revelar .escalonado > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
