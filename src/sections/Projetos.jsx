@@ -43,7 +43,7 @@ function SiteAoVivo({ projeto }) {
     return () => ro.disconnect()
   }, [])
 
-  const largura = tamanho.w && tamanho.w < 560 ? LARGURA_CELULAR : LARGURA_COMPUTADOR
+  const largura = tamanho.w && tamanho.w < 480 ? LARGURA_CELULAR : LARGURA_COMPUTADOR
   const escala = tamanho.w ? tamanho.w / largura : 0
 
   return (
@@ -62,10 +62,10 @@ function SiteAoVivo({ projeto }) {
           }}
         />
       )}
-      <span className="pointer-events-none absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-md bg-black/75 px-2 py-1 font-mono text-[11px] text-white transition-opacity duration-300 group-hover:opacity-0">
+      {/* No celular o aviso fica abaixo do card, para não cobrir o site */}
+      <span className="pointer-events-none absolute bottom-3 left-3 hidden items-center gap-1.5 rounded-md bg-black/75 px-2 py-1 font-mono text-[11px] text-white transition-opacity duration-300 group-hover:opacity-0 sm:inline-flex">
         <span className="size-1.5 animate-pulse rounded-full bg-emerald-400" aria-hidden="true" />
-        ao vivo · <span className="hidden sm:inline">passe o mouse para navegar</span>
-        <span className="sm:hidden">toque para navegar</span>
+        ao vivo · passe o mouse para navegar
       </span>
     </div>
   )
@@ -97,8 +97,17 @@ export default function Projetos() {
       <ol className="escalonado space-y-16 sm:space-y-24">
         {projetos.map((p, i) => (
           <li key={p.nome} className="group grid items-center gap-8 md:grid-cols-12 md:gap-12">
-            <div className={`aspect-[16/10] overflow-hidden rounded-xl border border-line bg-surface md:col-span-7 ${i % 2 ? 'md:order-2' : ''}`}>
-              <Imagem projeto={p} />
+            <div className={`md:col-span-7 ${i % 2 ? 'md:order-2' : ''}`}>
+              {/* Site ao vivo: card mais alto no celular, para caber mais da página */}
+              <div className={`overflow-hidden rounded-xl border border-line bg-surface ${p.site ? 'aspect-[4/5] sm:aspect-[16/10]' : 'aspect-[16/10]'}`}>
+                <Imagem projeto={p} />
+              </div>
+              {p.site && (
+                <p className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs text-subtle sm:hidden">
+                  <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" aria-hidden="true" />
+                  ao vivo · role dentro do card para navegar
+                </p>
+              )}
             </div>
 
             <div className="md:col-span-5">
