@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import Secao from '../components/Secao.jsx'
 import simboloMono from '../../assets/marca/logo/svg/simbolo-mono.svg'
 import { projetos } from '../data.js'
@@ -24,7 +25,51 @@ function LinkProjeto({ href, children, principal }) {
   )
 }
 
+// Largura em que o site é renderizado antes de ser reduzido para caber no card
+const LARGURA_SITE = 1280
+
+// Mostra o site real, ao vivo, dentro do card. Passando o mouse (ou tocando no celular) dá para rolar e navegar.
+function SiteAoVivo({ projeto }) {
+  const caixa = useRef(null)
+  const [tamanho, setTamanho] = useState({ w: 0, h: 0 })
+
+  useEffect(() => {
+    const el = caixa.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => setTamanho({ w: e.contentRect.width, h: e.contentRect.height }))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  const escala = tamanho.w ? tamanho.w / LARGURA_SITE : 0
+
+  return (
+    <div ref={caixa} className="relative size-full overflow-hidden bg-white">
+      {escala > 0 && (
+        <iframe
+          src={projeto.site}
+          title={`Site ${projeto.nome} ao vivo`}
+          loading="lazy"
+          className="absolute left-0 top-0 border-0"
+          style={{
+            width: LARGURA_SITE,
+            height: tamanho.h / escala,
+            transform: `scale(${escala})`,
+            transformOrigin: '0 0',
+          }}
+        />
+      )}
+      <span className="pointer-events-none absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-md bg-black/75 px-2 py-1 font-mono text-[11px] text-white transition-opacity duration-300 group-hover:opacity-0">
+        <span className="size-1.5 animate-pulse rounded-full bg-emerald-400" aria-hidden="true" />
+        ao vivo · <span className="hidden sm:inline">passe o mouse para navegar</span>
+        <span className="sm:hidden">toque para navegar</span>
+      </span>
+    </div>
+  )
+}
+
 function Imagem({ projeto }) {
+  if (projeto.site) return <SiteAoVivo projeto={projeto} />
   if (projeto.imagem) {
     return (
       <img

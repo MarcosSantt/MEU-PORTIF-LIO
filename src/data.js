@@ -13,6 +13,8 @@ export const projetos = [
       'Site próprio com catálogo, sacola e painel administrativo com controle de estoque. Os produtos também alimentam o catálogo do Instagram e do WhatsApp.',
     tecnologias: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Supabase', 'Cloudflare Pages'],
     imagem: null,
+    // Site mostrado ao vivo no card do projeto (no lugar da imagem)
+    site: 'https://elasnopadrao.com.br',
     // Página com o site real rodando dentro de um celular (arquivo em public/)
     demo: `${import.meta.env.BASE_URL}demo-elas-no-padrao.html`,
     github: '',
