@@ -4,7 +4,6 @@ import Inicio from './sections/Inicio.jsx'
 import Projetos from './sections/Projetos.jsx'
 import Sobre from './sections/Sobre.jsx'
 import Tecnologias from './sections/Tecnologias.jsx'
-import Identidade from './sections/Identidade.jsx'
 import Contato from './sections/Contato.jsx'
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
         <Projetos />
         <Sobre />
         <Tecnologias />
-        <Identidade />
         <Contato />
       </main>
       <Rodape />

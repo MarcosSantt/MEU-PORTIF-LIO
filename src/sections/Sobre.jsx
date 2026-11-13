@@ -31,9 +31,12 @@ export default function Sobre() {
               Desenvolvimento de Sistemas na <span className="text-fg">UNIFAAT</span>.
             </p>
             <p>
-              Crio sites que apresentam bem o negócio e sistemas que resolvem problemas reais do dia a dia, do controle
-              de estoque a um quiz em tempo real. Gosto de entender o que o cliente precisa antes de escrever a primeira
+              Crio sites que apresentam bem o negócio e sistemas que resolvem problemas reais do dia a dia, de uma loja
+              virtual ao controle de estoque. Gosto de entender o que o cliente precisa antes de escrever a primeira
               linha de código.
+            </p>
+            <p>
+              Também cuido do visual: criei a minha própria identidade, do símbolo ao favicon.
             </p>
           </div>
 
