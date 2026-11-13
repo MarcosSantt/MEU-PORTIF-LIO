@@ -1,8 +1,8 @@
 // Conteúdo do portfólio — edite aqui.
 //
 // Imagens de projeto: coloque o arquivo em src/assets/projetos/ e importe no topo, ex.:
-//   import luzEFe from './assets/projetos/luz-e-fe.webp'
-// depois use `imagem: luzEFe`. Proporção ideal: 16:10 (ex.: 1600×1000).
+//   import meuProjeto from './assets/projetos/meu-projeto.webp'
+// depois use `imagem: meuProjeto`. Proporção ideal: 16:10 (ex.: 1600×1000).
 
 export const projetos = [
   {
@@ -17,17 +17,6 @@ export const projetos = [
     site: 'https://elasnopadrao.com.br',
     // Página com o site real rodando dentro de um celular (arquivo em public/)
     demo: `${import.meta.env.BASE_URL}demo-elas-no-padrao.html`,
-    github: '',
-  },
-  {
-    nome: 'Luz e Fé',
-    tipo: 'Aplicação web em tempo real',
-    resumo: 'Quiz em tempo real no estilo Kahoot para a catequese.',
-    descricao:
-      'Os catequizandos entram pelo celular e respondem às perguntas ao mesmo tempo, com o resultado aparecendo na hora para toda a turma.',
-    tecnologias: ['React', 'Vite', 'Tailwind', 'Supabase Realtime', 'Vercel'],
-    imagem: null,
-    demo: '',
     github: '',
   },
   {
