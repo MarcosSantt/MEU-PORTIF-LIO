@@ -20,6 +20,19 @@ export const projetos = [
     github: '',
   },
   {
+    nome: 'LD Concept',
+    tipo: 'Vitrine digital',
+    resumo: 'Vitrine de moda feminina com pedido pelo WhatsApp.',
+    descricao:
+      'Catálogo de peças em que a cliente monta a sua seleção e envia direto para o WhatsApp da loja, com a mensagem pronta. A própria loja cadastra e edita as peças pelo celular, num painel administrativo.',
+    tecnologias: ['React', 'TypeScript', 'Vite', 'Decap CMS', 'Cloudflare Workers'],
+    imagem: null,
+    // Site mostrado ao vivo no card do projeto (no lugar da imagem)
+    site: 'https://ld-concept.marcoseduardo07666.workers.dev',
+    demo: 'https://ld-concept.marcoseduardo07666.workers.dev',
+    github: '',
+  },
+  {
     nome: 'EstoqueControl',
     cliente: 'Versah',
     tipo: 'Sistema de gestão',
