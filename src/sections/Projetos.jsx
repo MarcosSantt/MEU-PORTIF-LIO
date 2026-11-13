@@ -25,8 +25,10 @@ function LinkProjeto({ href, children, principal }) {
   )
 }
 
-// Largura em que o site é renderizado antes de ser reduzido para caber no card
-const LARGURA_SITE = 1280
+// Largura em que o site é renderizado antes de ser reduzido para caber no card:
+// versão de computador em telas grandes, versão de celular em telas pequenas
+const LARGURA_COMPUTADOR = 1280
+const LARGURA_CELULAR = 390
 
 // Mostra o site real, ao vivo, dentro do card. Passando o mouse (ou tocando no celular) dá para rolar e navegar.
 function SiteAoVivo({ projeto }) {
@@ -41,7 +43,8 @@ function SiteAoVivo({ projeto }) {
     return () => ro.disconnect()
   }, [])
 
-  const escala = tamanho.w ? tamanho.w / LARGURA_SITE : 0
+  const largura = tamanho.w && tamanho.w < 560 ? LARGURA_CELULAR : LARGURA_COMPUTADOR
+  const escala = tamanho.w ? tamanho.w / largura : 0
 
   return (
     <div ref={caixa} className="relative size-full overflow-hidden bg-white">
@@ -52,7 +55,7 @@ function SiteAoVivo({ projeto }) {
           loading="lazy"
           className="absolute left-0 top-0 border-0"
           style={{
-            width: LARGURA_SITE,
+            width: largura,
             height: tamanho.h / escala,
             transform: `scale(${escala})`,
             transformOrigin: '0 0',
