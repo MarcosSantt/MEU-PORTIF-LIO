@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elas no Padrão — veja o site funcionando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1A1512;--gold:#C9A46A;--cream:#F6EEE6}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px 48px}
+.intro{text-align:center;max-width:560px;margin-bottom:26px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:4px;font-weight:600;color:var(--gold)}
+.tag::before,.tag::after{content:"";width:28px;height:1px;background:var(--gold)}
+h1{margin:12px 0 6px;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;line-height:1}
+h1 em{color:var(--gold)}
+.intro p{margin:0;color:rgba(246,238,230,.72);font-size:15px;line-height:1.5}
+
+.phone{position:relative;width:390px;max-width:100%;height:800px;background:#0C0907;border-radius:52px;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 1px rgba(201,164,106,.35)}
+.screen{position:relative;width:100%;height:100%;border-radius:42px;overflow:hidden;background:#FBF6F1}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:24px;border-radius:14px;background:#0C0907;z-index:3;pointer-events:none}
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#6E5D52;font-size:13px;background:#FBF6F1;z-index:2;transition:opacity .4s}
+.loading.done{opacity:0;pointer-events:none}
+.spin{width:36px;height:36px;border-radius:50%;border:3px solid #EADDD2;border-top-color:#8A6A3A;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.hint{margin-top:14px;font-size:12px;color:rgba(246,238,230,.55);text-align:center}
+
+.outro{text-align:center;margin-top:28px;max-width:520px}
+.outro p{margin:0 0 16px;color:rgba(246,238,230,.75);font-size:15px;line-height:1.5}
+.links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.links a{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 24px;border-radius:30px;font-weight:700;font-size:14px;letter-spacing:.5px;text-decoration:none}
+.primary{background:var(--gold);color:#1A1512}
+.primary:hover{background:#E2C48F}
+.ghost{border:1px solid rgba(201,164,106,.6);color:var(--cream)}
+.ghost:hover{background:rgba(201,164,106,.12)}
+.credit{margin-top:22px;font-size:12px;color:rgba(246,238,230,.55)}
+.credit a{color:var(--gold)}
+@media (max-width:420px){.phone{height:720px;border-radius:40px;padding:8px}.screen{border-radius:34px}h1{font-size:36px}}
+</style>
+</head>
+<body>
+
+<header class="intro">
+  <span class="tag">PROJETO NO AR</span>
+  <h1>Elas no <em>Padrão</em></h1>
+  <p>Loja de joias e acessórios feita do zero. Este é o site real: role, navegue pelas categorias e abra os produtos aqui mesmo.</p>
+</header>
+
+<div class="phone">
+  <div class="screen">
+    <div class="notch" aria-hidden="true"></div>
+    <div class="loading" id="loading"><div class="spin" aria-hidden="true"></div>Carregando a loja…</div>
+    <iframe id="site" src="https://elasnopadrao.com.br" title="Site da loja Elas no Padrão" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+</div>
+<p class="hint">Não carregou? <a href="https://elasnopadrao.com.br" target="_blank" rel="noopener" style="color:var(--gold)">Abra o site em uma nova aba</a>.</p>
+
+<section class="outro">
+  <p>Quer uma loja assim para o seu negócio? Peça seu orçamento.</p>
+  <div class="links">
+    <a class="primary" href="https://elasnopadrao.com.br" target="_blank" rel="noopener">Abrir o site em tela cheia
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+    </a>
+    <a class="ghost" href="https://instagram.com/devmarcos7" target="_blank" rel="noopener">Solicitar orçamento</a>
+  </div>
+  <div class="credit">Desenvolvido por <a href="https://instagram.com/devmarcos7" target="_blank" rel="noopener">@devmarcos7</a></div>
+</section>
+
+<script>
+(function(){
+  var f=document.getElementById('site'),l=document.getElementById('loading');
+  f.addEventListener('load',function(){l.classList.add('done')});
+  setTimeout(function(){l.classList.add('done')},8000);
+})();
+</script>
+</body>
+</html>

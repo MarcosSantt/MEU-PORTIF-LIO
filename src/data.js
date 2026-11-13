@@ -6,6 +6,18 @@
 
 export const projetos = [
   {
+    nome: 'Elas no Padrão',
+    tipo: 'Loja virtual',
+    resumo: 'Loja online de joias e acessórios, feita do zero.',
+    descricao:
+      'Site próprio com catálogo, sacola e painel administrativo com controle de estoque. Os produtos também alimentam o catálogo do Instagram e do WhatsApp.',
+    tecnologias: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Supabase', 'Cloudflare Pages'],
+    imagem: null,
+    // Página com o site real rodando dentro de um celular (arquivo em public/)
+    demo: `${import.meta.env.BASE_URL}demo-elas-no-padrao.html`,
+    github: '',
+  },
+  {
     nome: 'Luz e Fé',
     tipo: 'Aplicação web em tempo real',
     resumo: 'Quiz em tempo real no estilo Kahoot para a catequese.',
