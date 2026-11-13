@@ -9,16 +9,16 @@ export default function Inicio() {
       <div className="entrada flex items-center gap-4">
         <img src={simbolo} alt="" className="size-12 dark:hidden" />
         <img src={simboloBranco} alt="" className="hidden size-12 dark:block" />
-        <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Desenvolvedor web · Atibaia, SP</p>
+        <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Desenvolvedor · Atibaia, SP</p>
       </div>
 
       <h1 id="inicio-titulo" className="entrada mt-10 max-w-3xl text-[2.6rem] leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-7xl" style={atraso(0.08)}>
-        Sites e sistemas web feitos sob medida.
+        Se dá pra imaginar, dá pra programar.
       </h1>
 
       <p className="entrada mt-6 max-w-xl text-lg leading-relaxed text-subtle" style={atraso(0.16)}>
-        Do site que apresenta o seu negócio ao sistema que organiza o dia a dia da sua empresa. Código limpo,
-        entrega no prazo e conversa direta com quem faz.
+        Seu negócio no automático: sites, sistemas e automações sob medida. Código limpo, entrega no prazo e
+        conversa direta com quem faz.
       </p>
 
       <div className="entrada mt-10 flex flex-wrap gap-3" style={atraso(0.24)}>

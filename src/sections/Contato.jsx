@@ -52,9 +52,9 @@ export default function Contato() {
   const principal = canais[0]
 
   return (
-    <Secao id="contato" numero="04" rotulo="Contato" titulo="Vamos tirar seu projeto do papel?">
+    <Secao id="contato" numero="04" rotulo="Contato" titulo="Você imagina, eu desenvolvo.">
       <p className="max-w-xl text-lg leading-relaxed text-subtle">
-        Conte o que você precisa: um site novo, um sistema para a sua empresa ou uma melhoria em algo que já existe.
+        Conte o que você precisa: um site novo, um sistema para a sua empresa, a automação de uma tarefa ou uma melhoria em algo que já existe.
         Respondo em até um dia útil.
       </p>
 

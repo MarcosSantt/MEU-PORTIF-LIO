@@ -13,7 +13,7 @@ const etapas = [
 const fatos = [
   ['Local', 'Atibaia, SP'],
   ['Formação', 'Análise e Desenvolvimento de Sistemas · UNIFAAT'],
-  ['Atuação', 'Freelancer · sites e sistemas web'],
+  ['Atuação', 'Freelancer · sites, sistemas e automações'],
 ]
 
 export default function Sobre() {
@@ -31,9 +31,12 @@ export default function Sobre() {
               Desenvolvimento de Sistemas na <span className="text-fg">UNIFAAT</span>.
             </p>
             <p>
-              Crio sites que apresentam bem o negócio e sistemas que resolvem problemas reais do dia a dia, de uma loja
-              virtual ao controle de estoque. Gosto de entender o que o cliente precisa antes de escrever a primeira
-              linha de código.
+              Crio sites que apresentam bem o negócio, sistemas que resolvem problemas reais do dia a dia e automações
+              que tiram o trabalho repetitivo da rotina da empresa, de uma loja virtual ao controle de estoque.{' '}
+              <span className="text-fg">Se existe um processo, existe um jeito de automatizar.</span>
+            </p>
+            <p>
+              Gosto de entender o que o cliente precisa antes de escrever a primeira linha de código.
             </p>
             <p>
               Também cuido do visual: criei a minha própria identidade, do símbolo ao favicon.
