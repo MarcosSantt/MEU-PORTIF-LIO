@@ -53,8 +53,8 @@ export const gruposTecnologias = [
 // Deixe `link` vazio enquanto não tiver; o item aparece como placeholder.
 // WhatsApp: só números com DDI e DDD, ex.: '5511999999999'.
 export const contatos = {
-  email: '',
-  github: '',
-  linkedin: '',
-  whatsapp: '',
+  email: 'marcoseduardo07666@gmail.com',
+  github: 'https://github.com/MarcosSantt',
+  linkedin: 'https://www.linkedin.com/in/marcos-eduardo-dos-santos-sousa-3773aa3b6',
+  whatsapp: '5511953035526',
 }
