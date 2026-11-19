@@ -268,13 +268,16 @@ dialog::backdrop {
 }
 
 /* ---------------------------------------------------------------------------
-   Abertura com a logo (ver components/Intro.jsx), ~3s
-   0.0–1.6s  símbolo vem do fundo girando em 3D (2,5 voltas) e se desenha
-   1.6–2.2s  assenta, um reflexo passa pela face e a assinatura aparece
-   2.2–3.0s  a câmera atravessa o símbolo e o site aparece por trás
+   Abertura com a logo (ver components/Intro.jsx), ~3,9s
+   0.00–0.85s  tentáculos saem das bordas e agarram o símbolo lá no fundo
+   0.85–2.00s  giram o símbolo trazendo-o para perto; ele se desenha
+   2.00–2.36s  impulso e arremesso contra a tela (impacto + onda de choque)
+   2.36–3.15s  tentáculos recolhem, assinatura aparece
+   3.15–3.90s  a câmera atravessa o símbolo e o site aparece por trás
+   O giro do símbolo (transform de .intro-giro) é calculado no JS.
    --------------------------------------------------------------------------- */
 [data-intro] {
-  --intro: 2.25s;
+  --intro: 3.25s;
 }
 .intro-rodando,
 .intro-rodando body {
@@ -290,10 +293,36 @@ dialog::backdrop {
   gap: 2rem;
   background: var(--bg);
   cursor: pointer;
-  animation: intro-sai 0.8s cubic-bezier(0.7, 0, 0.84, 0) 2.2s both;
+  animation: intro-sai 0.75s cubic-bezier(0.7, 0, 0.84, 0) 3.15s both;
 }
 .intro-pulando {
   animation: intro-sai 0.35s ease both;
+}
+/* Camada que treme no impacto (o JS mexe no transform dela) */
+.intro-cena {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2rem;
+}
+.intro-tela {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.intro-palco,
+.intro-assinatura {
+  position: relative;
+  z-index: 1;
+}
+.intro-tela-frente {
+  z-index: 2;
+}
+.intro-assinatura {
+  z-index: 3;
 }
 @keyframes intro-sai {
   to {
@@ -308,7 +337,7 @@ dialog::backdrop {
   inset: 0;
   background: radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--brand) 28%, transparent), transparent 38%);
   opacity: 0;
-  animation: intro-brilho 1.6s ease-out 1.15s both;
+  animation: intro-brilho 1.4s ease-out 2.3s both;
 }
 @keyframes intro-brilho {
   30% {
@@ -321,16 +350,17 @@ dialog::backdrop {
 
 .intro-palco {
   perspective: 900px;
-  width: clamp(110px, 26vmin, 190px);
+  width: clamp(130px, 30vmin, 230px);
   aspect-ratio: 1;
 }
 /* Foco de lente: entra desfocado, sai atravessando a câmera (filtro fica fora do 3D) */
 .intro-lente {
   width: 100%;
   height: 100%;
+  perspective: 900px; /* igual a PERSPECTIVA em Intro.jsx */
   animation:
     intro-foco 1.3s var(--expo) both,
-    intro-atravessa 0.8s cubic-bezier(0.7, 0, 0.84, 0) 2.2s forwards;
+    intro-atravessa 0.75s cubic-bezier(0.7, 0, 0.84, 0) 3.15s forwards;
 }
 @keyframes intro-foco {
   from {
@@ -351,18 +381,7 @@ dialog::backdrop {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  animation: intro-giro 1.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes intro-giro {
-  from {
-    transform: translateZ(-1400px) rotateX(38deg) rotateY(-900deg) rotateZ(-30deg);
-  }
-  70% {
-    transform: translateZ(40px) rotateX(-6deg) rotateY(8deg) rotateZ(2deg);
-  }
-  to {
-    transform: none;
-  }
+  will-change: transform;
 }
 .intro-fatia,
 .intro-frente {
@@ -391,12 +410,12 @@ dialog::backdrop {
 .intro-circulo {
   stroke: var(--fg);
   stroke-dasharray: 1;
-  animation: intro-desenha 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both;
+  animation: intro-desenha 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.85s both;
 }
 .intro-traco {
   stroke: var(--brand);
   stroke-dasharray: 1;
-  animation: intro-desenha 0.5s cubic-bezier(0.65, 0, 0.35, 1) 1.15s both;
+  animation: intro-desenha 0.4s cubic-bezier(0.65, 0, 0.35, 1) 1.85s both;
 }
 @keyframes intro-desenha {
   from {
@@ -415,7 +434,7 @@ dialog::backdrop {
   background-size: 300% 100%;
   mix-blend-mode: overlay;
   mask: radial-gradient(circle, black 58%, transparent 60%);
-  animation: intro-reflexo 0.9s ease-in-out 1.45s both;
+  animation: intro-reflexo 0.9s ease-in-out 2.55s both;
   pointer-events: none;
 }
 @keyframes intro-reflexo {
@@ -433,8 +452,8 @@ dialog::backdrop {
   font-size: clamp(1.25rem, 4vmin, 1.75rem);
   letter-spacing: -0.01em;
   animation:
-    intro-assina 0.9s var(--expo) 1.45s both,
-    intro-sai 0.5s ease 2.2s forwards;
+    intro-assina 0.9s var(--expo) 2.6s both,
+    intro-sai 0.5s ease 3.15s forwards;
 }
 @keyframes intro-assina {
   from {
