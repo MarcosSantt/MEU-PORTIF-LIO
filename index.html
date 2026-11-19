@@ -20,8 +20,7 @@
         if (escuro) document.documentElement.dataset.theme = 'dark'
       } catch {}
       // Abertura com a logo: toda vez que a página carrega, exceto com movimento reduzido (ver src/components/Intro.jsx)
-      // Por enquanto desligada em telas de toque (celular): a abertura em 3D deixava a página em branco no Safari do iPhone
-      if (!matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)').matches) document.documentElement.dataset.intro = ''
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.dataset.intro = ''
       // Se algum erro impedir o site de carregar, mostra o erro na tela em vez de deixar a página em branco
       addEventListener('error', function (e) {
         var alvo = e.target && e.target.tagName
