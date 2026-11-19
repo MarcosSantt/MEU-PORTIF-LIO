@@ -19,6 +19,8 @@
         const escuro = salvo ? salvo === 'escuro' : matchMedia('(prefers-color-scheme: dark)').matches
         if (escuro) document.documentElement.dataset.theme = 'dark'
       } catch {}
+      // Abertura com a logo: toda vez que a página carrega, exceto com movimento reduzido (ver src/components/Intro.jsx)
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.dataset.intro = ''
     </script>
   </head>
   <body>

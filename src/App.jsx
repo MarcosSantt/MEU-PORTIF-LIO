@@ -1,6 +1,7 @@
 import Cabecalho from './components/Cabecalho.jsx'
 import Rodape from './components/Rodape.jsx'
 import FundoAnimado from './components/FundoAnimado.jsx'
+import Intro from './components/Intro.jsx'
 import useCenas from './useCenas.js'
 import Inicio from './sections/Inicio.jsx'
 import Projetos from './sections/Projetos.jsx'
@@ -13,6 +14,7 @@ export default function App() {
 
   return (
     <>
+      <Intro />
       <FundoAnimado />
       <Cabecalho />
       <main id="conteudo">

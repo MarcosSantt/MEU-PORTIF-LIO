@@ -90,7 +90,7 @@
 }
 .entrada {
   animation: subir 0.6s var(--expo) both;
-  animation-delay: var(--atraso, 0s);
+  animation-delay: calc(var(--intro, 0s) + var(--atraso, 0s));
 }
 
 @keyframes camera {
@@ -121,7 +121,7 @@
 }
 .entrada-palavras .palavra > span {
   animation: palavra-sobe 0.75s var(--expo) both;
-  animation-delay: calc(var(--atraso, 0s) + var(--i) * 0.035s);
+  animation-delay: calc(var(--intro, 0s) + var(--atraso, 0s) + var(--i) * 0.035s);
 }
 .revelar .palavra > span {
   transform: translateY(110%) rotate(6deg);
@@ -267,9 +267,189 @@ dialog::backdrop {
   background: rgb(15 17 21 / 0.85);
 }
 
+/* ---------------------------------------------------------------------------
+   Abertura com a logo (ver components/Intro.jsx), ~3s
+   0.0–1.6s  símbolo vem do fundo girando em 3D (2,5 voltas) e se desenha
+   1.6–2.2s  assenta, um reflexo passa pela face e a assinatura aparece
+   2.2–3.0s  a câmera atravessa o símbolo e o site aparece por trás
+   --------------------------------------------------------------------------- */
+[data-intro] {
+  --intro: 2.25s;
+}
+.intro-rodando,
+.intro-rodando body {
+  overflow: hidden;
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2rem;
+  background: var(--bg);
+  cursor: pointer;
+  animation: intro-sai 0.8s cubic-bezier(0.7, 0, 0.84, 0) 2.2s both;
+}
+.intro-pulando {
+  animation: intro-sai 0.35s ease both;
+}
+@keyframes intro-sai {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Halo azul que acende quando o símbolo assenta */
+.intro-brilho {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--brand) 28%, transparent), transparent 38%);
+  opacity: 0;
+  animation: intro-brilho 1.6s ease-out 1.15s both;
+}
+@keyframes intro-brilho {
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.35;
+  }
+}
+
+.intro-palco {
+  perspective: 900px;
+  width: clamp(110px, 26vmin, 190px);
+  aspect-ratio: 1;
+}
+/* Foco de lente: entra desfocado, sai atravessando a câmera (filtro fica fora do 3D) */
+.intro-lente {
+  width: 100%;
+  height: 100%;
+  animation:
+    intro-foco 1.3s var(--expo) both,
+    intro-atravessa 0.8s cubic-bezier(0.7, 0, 0.84, 0) 2.2s forwards;
+}
+@keyframes intro-foco {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+  }
+}
+@keyframes intro-atravessa {
+  to {
+    transform: scale(9);
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+.intro-giro {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: intro-giro 1.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes intro-giro {
+  from {
+    transform: translateZ(-1400px) rotateX(38deg) rotateY(-900deg) rotateZ(-30deg);
+  }
+  70% {
+    transform: translateZ(40px) rotateX(-6deg) rotateY(8deg) rotateZ(2deg);
+  }
+  to {
+    transform: none;
+  }
+}
+.intro-fatia,
+.intro-frente {
+  position: absolute;
+  inset: 0;
+  backface-visibility: visible;
+}
+.intro-fatia {
+  transform: translateZ(var(--z));
+}
+.intro-fatia svg,
+.intro-frente svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* Fatias de trás: dão espessura de moeda, escurecendo para o fundo */
+.intro-circulo-fatia,
+.intro-traco-fatia {
+  stroke: color-mix(in srgb, var(--brand) calc(70% - var(--sombra) * 40%), var(--fg));
+}
+.intro-traco-fatia {
+  stroke: color-mix(in srgb, var(--brand) 55%, black);
+}
+/* Face da frente: se desenha durante o giro */
+.intro-circulo {
+  stroke: var(--fg);
+  stroke-dasharray: 1;
+  animation: intro-desenha 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both;
+}
+.intro-traco {
+  stroke: var(--brand);
+  stroke-dasharray: 1;
+  animation: intro-desenha 0.5s cubic-bezier(0.65, 0, 0.35, 1) 1.15s both;
+}
+@keyframes intro-desenha {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* Reflexo de luz que varre a face depois que o símbolo assenta */
+.intro-reflexo {
+  position: absolute;
+  inset: -10%;
+  transform: translateZ(1px);
+  background: linear-gradient(105deg, transparent 40%, rgb(255 255 255 / 0.55) 50%, transparent 60%);
+  background-size: 300% 100%;
+  mix-blend-mode: overlay;
+  mask: radial-gradient(circle, black 58%, transparent 60%);
+  animation: intro-reflexo 0.9s ease-in-out 1.45s both;
+  pointer-events: none;
+}
+@keyframes intro-reflexo {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Assinatura: letras se juntam e aparecem sob o símbolo */
+.intro-assinatura {
+  font-weight: 700;
+  font-size: clamp(1.25rem, 4vmin, 1.75rem);
+  letter-spacing: -0.01em;
+  animation:
+    intro-assina 0.9s var(--expo) 1.45s both,
+    intro-sai 0.5s ease 2.2s forwards;
+}
+@keyframes intro-assina {
+  from {
+    opacity: 0;
+    letter-spacing: 0.6em;
+    filter: blur(8px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .intro {
+    display: none;
   }
   .entrada,
   .entrada-palavras .palavra > span,
