@@ -74,6 +74,7 @@ export default function Cabecalho() {
           </button>
         </nav>
       </div>
+      <div aria-hidden="true" className="barra-progresso absolute inset-x-0 -bottom-px h-0.5 origin-left bg-brand" />
 
       {aberto && (
         <ul id="menu-movel" className="border-t border-line px-4 py-2 md:hidden">

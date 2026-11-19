@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import Palavras from './Palavras.jsx'
 
 // Seção com rótulo em mono no estilo das pranchas ("02 — PROJETOS") e entrada suave
 export default function Secao({ id, numero, rotulo, titulo, children }) {
@@ -22,11 +23,11 @@ export default function Secao({ id, numero, rotulo, titulo, children }) {
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} className="border-t border-line">
       <div ref={ref} className="revelar mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28">
-        <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">
+        <p className="rotulo font-mono text-xs tracking-[0.2em] text-subtle uppercase">
           {numero} — {rotulo}
         </p>
         <h2 id={`${id}-titulo`} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          {titulo}
+          <Palavras texto={titulo} />
         </h2>
         <div className="mt-10">{children}</div>
       </div>

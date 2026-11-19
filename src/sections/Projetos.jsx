@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Secao from '../components/Secao.jsx'
 import simboloMono from '../../assets/marca/logo/svg/simbolo-mono.svg'
 import { projetos } from '../data.js'
 
 function LinkProjeto({ href, children, principal }) {
-  const base = 'inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium'
+  // min-h-11 = 44px, alvo de toque confortável no celular
+  const base = 'inline-flex min-h-11 items-center gap-1.5 rounded-lg px-4 text-sm font-medium'
   if (!href) {
     return (
       <span aria-disabled="true" title="Em breve" className={`${base} cursor-not-allowed border border-dashed border-line text-subtle`}>
@@ -17,9 +18,16 @@ function LinkProjeto({ href, children, principal }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`${base} transition-colors ${principal ? 'bg-fg text-bg hover:opacity-85' : 'border border-line hover:border-fg'}`}
+      className={`${base} transition-colors duration-300 ${
+        principal
+          ? 'bg-fg text-bg group-hover:bg-brand group-focus-within:bg-brand'
+          : 'border border-line group-hover:border-fg group-focus-within:border-fg'
+      }`}
     >
-      {children} <span aria-hidden="true">↗</span>
+      {children}{' '}
+      <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+        ↗
+      </span>
       <span className="sr-only">(abre em nova aba)</span>
     </a>
   )
@@ -79,7 +87,7 @@ function Imagem({ projeto }) {
         src={projeto.imagem}
         alt={`Tela do projeto ${projeto.nome}`}
         loading="lazy"
-        className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        className="size-full object-cover"
       />
     )
   }
@@ -91,17 +99,92 @@ function Imagem({ projeto }) {
   )
 }
 
+// Inclina o cartão em 3D seguindo o mouse (só com mouse e sem movimento reduzido)
+function CartaoInclinado({ className = '', aspecto = 'aspect-[16/10]', children }) {
+  const cartao = useRef(null)
+
+  function mover(e) {
+    if (!matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return
+    const r = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - r.left) / r.width - 0.5
+    const y = (e.clientY - r.top) / r.height - 0.5
+    cartao.current.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`
+  }
+
+  function sair() {
+    cartao.current.style.transform = ''
+  }
+
+  return (
+    <div className={`perspective-[1600px] ${className}`} onMouseMove={mover} onMouseLeave={sair}>
+      <div
+        ref={cartao}
+        className={`cortina ${aspecto} overflow-hidden rounded-xl border border-line bg-surface transition-transform duration-150 ease-out will-change-transform`}
+      >
+        <div className="zoom size-full">{children}</div>
+      </div>
+    </div>
+  )
+}
+
+// Projetos já revelados nesta visita (sessionStorage dura até fechar a aba)
+const CHAVE = 'vitrine-revelados'
+
+function lerRevelados() {
+  try {
+    return new Set(JSON.parse(sessionStorage.getItem(CHAVE)) || [])
+  } catch {
+    return new Set()
+  }
+}
+
+// Revela cada card uma vez por visita: imagem abre com máscara horizontal, depois o texto aparece.
+// Cards já vistos (ou com movimento reduzido) começam direto no estado final.
+function useVitrine() {
+  const lista = useRef(null)
+
+  useLayoutEffect(() => {
+    const revelados = lerRevelados()
+    const reduzido = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const observer = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue
+          e.target.classList.add('visivel')
+          revelados.add(e.target.dataset.projeto)
+          observer.unobserve(e.target)
+        }
+        try {
+          sessionStorage.setItem(CHAVE, JSON.stringify([...revelados]))
+        } catch {}
+      },
+      { threshold: 0.25 },
+    )
+
+    for (const card of lista.current.children) {
+      if (reduzido || revelados.has(card.dataset.projeto)) card.classList.add('visivel', 'ja-revelado')
+      else observer.observe(card)
+    }
+    return () => observer.disconnect()
+  }, [])
+
+  return lista
+}
+
 export default function Projetos() {
+  const lista = useVitrine()
+
   return (
     <Secao id="projetos" numero="01" rotulo="Projetos" titulo="Trabalhos recentes">
-      <ol className="escalonado space-y-16 sm:space-y-24">
+      <ol ref={lista} className="vitrine space-y-16 sm:space-y-24">
         {projetos.map((p, i) => (
-          <li key={p.nome} className="group grid items-center gap-8 md:grid-cols-12 md:gap-12">
+          <li key={p.nome} data-projeto={p.nome} className="group grid items-center gap-8 md:grid-cols-12 md:gap-12">
             <div className={`md:col-span-7 ${i % 2 ? 'md:order-2' : ''}`}>
               {/* Site ao vivo: card mais alto no celular, para caber mais da página */}
-              <div className={`overflow-hidden rounded-xl border border-line bg-surface ${p.site ? 'aspect-[4/5] sm:aspect-[16/10]' : 'aspect-[16/10]'}`}>
+              <CartaoInclinado aspecto={p.site ? 'aspect-[4/5] sm:aspect-[16/10]' : 'aspect-[16/10]'}>
                 <Imagem projeto={p} />
-              </div>
+              </CartaoInclinado>
               {p.site && (
                 <p className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs text-subtle sm:hidden">
                   <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" aria-hidden="true" />
@@ -110,7 +193,7 @@ export default function Projetos() {
               )}
             </div>
 
-            <div className="md:col-span-5">
+            <div className="texto md:col-span-5">
               <p className="font-mono text-xs text-subtle">
                 {String(i + 1).padStart(2, '0')} / {p.tipo}
               </p>
