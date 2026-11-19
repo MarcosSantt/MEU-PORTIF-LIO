@@ -20,7 +20,16 @@
         if (escuro) document.documentElement.dataset.theme = 'dark'
       } catch {}
       // Abertura com a logo: toda vez que a página carrega, exceto com movimento reduzido (ver src/components/Intro.jsx)
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.dataset.intro = ''
+      // Por enquanto desligada em telas de toque (celular): a abertura em 3D deixava a página em branco no Safari do iPhone
+      if (!matchMedia('(prefers-reduced-motion: reduce), (pointer: coarse)').matches) document.documentElement.dataset.intro = ''
+      // Se algum erro impedir o site de carregar, mostra o erro na tela em vez de deixar a página em branco
+      addEventListener('error', function (e) {
+        var alvo = e.target && e.target.tagName
+        if (alvo && alvo !== 'SCRIPT') return
+        var raiz = document.getElementById('root')
+        if (raiz && raiz.childElementCount) return
+        document.body.insertAdjacentHTML('beforeend', '<pre style="white-space:pre-wrap;padding:16px;font:13px monospace;color:#b91c1c">Erro ao carregar: ' + (e.message || (e.target && (e.target.src || e.target.href)) || 'desconhecido') + '</pre>')
+      }, true)
     </script>
   </head>
   <body>

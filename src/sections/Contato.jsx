@@ -17,7 +17,7 @@ const canais = [
   },
   {
     rotulo: 'LinkedIn',
-    valor: contatos.linkedin.replace(/^https?:\/\/(www\.)?/, ''),
+    valor: contatos.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com/, '').replace(/^\/in\/([^-/]+-[^-/]+).*$/, '/in/$1'),
     placeholder: '[LinkedIn]',
     href: contatos.linkedin,
   },
@@ -79,15 +79,15 @@ export default function Contato() {
                 rel="noreferrer"
                 className="group flex items-center justify-between gap-4 py-5"
               >
-                <span className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">{c.rotulo}</span>
-                <span className="flex items-center gap-2 font-medium transition-colors group-hover:text-brand">
-                  {c.valor}
-                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                <span className="shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.2em] text-subtle uppercase">{c.rotulo}</span>
+                <span className="flex min-w-0 items-center gap-2 text-right font-medium transition-colors group-hover:text-brand">
+                  <span className="min-w-0 break-all">{c.valor}</span>
+                  <span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
                 </span>
               </a>
             ) : (
               <div className="flex items-center justify-between gap-4 py-5">
-                <span className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">{c.rotulo}</span>
+                <span className="shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.2em] text-subtle uppercase">{c.rotulo}</span>
                 <span className="font-mono text-sm text-subtle">{c.placeholder}</span>
               </div>
             )}
