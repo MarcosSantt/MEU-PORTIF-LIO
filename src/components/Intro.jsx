@@ -168,22 +168,30 @@ function useTentaculos(atras, frente, lente, cena) {
     let cy = 0
     let raio = 0
 
+    // Mede a tela e a posição do símbolo. Roda a cada quadro: no celular a barra de endereço
+    // aparece e some e muda a altura da tela no meio da abertura (nem sempre com evento de
+    // resize), e os tentáculos precisam continuar mirando onde o símbolo está de fato.
     function medir() {
-      w = innerWidth
-      h = innerHeight
+      const largura = telas[0].clientWidth
+      const altura = telas[0].clientHeight
       const dpr = Math.min(devicePixelRatio || 1, 2)
-      for (const c of telas) {
-        c.width = w * dpr
-        c.height = h * dpr
-        c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0)
+      if (largura !== w || altura !== h || telas[0].width !== Math.round(largura * dpr)) {
+        w = largura
+        h = altura
+        for (const c of telas) {
+          c.width = Math.round(w * dpr)
+          c.height = Math.round(h * dpr)
+          c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0)
+        }
       }
+      // Relativo à própria tela de desenho (e não à janela), para nunca desalinhar
+      const base = telas[0].getBoundingClientRect()
       const r = lente.current.getBoundingClientRect()
-      cx = r.left + r.width / 2
-      cy = r.top + r.height / 2
+      cx = r.left - base.left + r.width / 2
+      cy = r.top - base.top + r.height / 2
       raio = (r.width * 191) / 512
     }
     medir()
-    addEventListener('resize', medir)
 
     const escuro = document.documentElement.dataset.theme === 'dark'
     const cores = escuro ? CORES.escuro : CORES.claro
@@ -324,6 +332,7 @@ function useTentaculos(atras, frente, lente, cena) {
     function animar(agora) {
       if (!cena.current) return // a abertura já foi desmontada (pulada)
       const t = Number.isNaN(congelado) ? (agora - inicio) / 1000 : congelado
+      medir()
       const p = pose(t)
       giro.style.transform = `translateZ(${p.z}px) rotateX(${p.a}deg) rotateY(${p.b}deg) rotateZ(${p.c}deg)`
 
@@ -344,7 +353,6 @@ function useTentaculos(atras, frente, lente, cena) {
 
     return () => {
       cancelAnimationFrame(quadro)
-      removeEventListener('resize', medir)
     }
   }, [atras, frente, lente, cena])
 }

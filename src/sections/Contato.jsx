@@ -48,6 +48,17 @@ function CopiarEmail() {
   )
 }
 
+// Em telas estreitas, e-mail e links quebram antes do "@" ou depois da "/" (e não no meio de uma palavra)
+function quebraNaArroba(texto) {
+  if (typeof texto !== 'string') return texto
+  return texto.split(/(?=@)|(?<=\/)/).map((parte, i) => (
+    <span key={i}>
+      {i > 0 && <wbr />}
+      {parte}
+    </span>
+  ))
+}
+
 export default function Contato() {
   const principal = canais[0]
 
@@ -81,7 +92,7 @@ export default function Contato() {
               >
                 <span className="shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.2em] text-subtle uppercase">{c.rotulo}</span>
                 <span className="flex min-w-0 items-center gap-2 text-right font-medium transition-colors group-hover:text-brand">
-                  <span className="min-w-0 break-all">{c.valor}</span>
+                  <span className="min-w-0 [overflow-wrap:anywhere]">{quebraNaArroba(c.valor)}</span>
                   <span aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
                 </span>
               </a>
